@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "660181115381",
+    "project_id": "project-portunus",
+    "storage_bucket": "project-portunus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660181115381:android:6ed5bd51aa83a0f35480bc",
+        "android_client_info": {
+          "package_name": "com.example.portunus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660181115381-udtl8g1m948v9t37tioqcakoid9cckbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFmnRQmBtkxNIIGIjTxU46sHBKQ7qfXDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660181115381-udtl8g1m948v9t37tioqcakoid9cckbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
