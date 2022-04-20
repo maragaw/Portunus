@@ -3,6 +3,7 @@ package com.example.portunus;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.*;
 import android.view.View;
@@ -57,23 +58,14 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Location");
 //        myRef.setValue("Some GPS Data");
 
-        uploadButton = findViewById(R.id.UploadButton);
-
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference uploadRef = database.getReference("GPS Location");
-                //when button is clicked, uploads data to firebase
-                String userinput = editText.getText().toString().trim();
-                uploadRef.setValue(userinput);
-
-
-            }
-        });
-
         ArrayList<Pair<Double, Double>> firebaseRead = new ArrayList<>();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,firebaseRead);
         listView.setAdapter(arrayAdapter);
+
+
+
+
+
         //eventListener for upload button, uploads data in text field to firebase
         //in the text field, input two double values separated by comma (lat, long)
         myRef.addValueEventListener(new ValueEventListener() {
@@ -100,6 +92,37 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+       // double[] latitudes = new double[100];
+        //double[] longitudes = new double[100];
+
+        ArrayList<Integer> latitudes = new ArrayList<>();
+        ArrayList<Integer> longitudes = new ArrayList<>();
+
+        for(int i = 0; i<firebaseRead.size(); i++){
+//            latitudes[i] = (firebaseRead.get(i).first);
+//            longitudes[i] = (firebaseRead.get(i).second);
+
+            int lat = (int)Math.round(firebaseRead.get(i).first);
+            int lng = (int)Math.round(firebaseRead.get(i).second);
+            latitudes.add(lat);
+            longitudes.add(lng);
+        }
+
+        uploadButton = findViewById(R.id.UploadButton);
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+
+
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("latitudes", latitudes);
+                intent.putExtra("longitudes", longitudes);
+                startActivity(intent);
+            }
+        });
+
+
 
 
     }
@@ -107,5 +130,7 @@ public class MainActivity extends AppCompatActivity {
     public void readFireBase() {
 
     }
+
+
 
 }
