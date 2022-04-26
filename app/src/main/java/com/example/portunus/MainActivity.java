@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
         //eventListener for upload button, uploads data in text field to firebase
         //in the text field, input two double values separated by comma (lat, long)
         myRef.addValueEventListener(new ValueEventListener() {
@@ -81,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
                 firebaseRead.add(coordinates);
                 arrayAdapter.notifyDataSetChanged();
 
+
+//                for(int i = 0; i<firebaseRead.size(); i++){
+////            latitudes[i] = (firebaseRead.get(i).first);
+////            longitudes[i] = (firebaseRead.get(i).second);
+//
+//                    int lat = (int)Math.round(firebaseRead.get(i).first);
+//                    int lng = (int)Math.round(firebaseRead.get(i).second);
+//                    latitudes.add(lat);
+//                    longitudes.add(lng);
+//
+//                }
+
             }
 
 
@@ -95,18 +105,7 @@ public class MainActivity extends AppCompatActivity {
        // double[] latitudes = new double[100];
         //double[] longitudes = new double[100];
 
-        ArrayList<Integer> latitudes = new ArrayList<>();
-        ArrayList<Integer> longitudes = new ArrayList<>();
 
-        for(int i = 0; i<firebaseRead.size(); i++){
-//            latitudes[i] = (firebaseRead.get(i).first);
-//            longitudes[i] = (firebaseRead.get(i).second);
-
-            int lat = (int)Math.round(firebaseRead.get(i).first);
-            int lng = (int)Math.round(firebaseRead.get(i).second);
-            latitudes.add(lat);
-            longitudes.add(lng);
-        }
 
         uploadButton = findViewById(R.id.UploadButton);
 
@@ -116,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                intent.putExtra("latitudes", latitudes);
-                intent.putExtra("longitudes", longitudes);
+//                intent.putExtra("latitudes", latitudes);
+//                intent.putExtra("longitudes", longitudes);
                 startActivity(intent);
             }
         });

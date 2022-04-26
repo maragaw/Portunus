@@ -42,16 +42,22 @@ public class MenuActivity extends AppCompatActivity {
 
         gpsButton = findViewById(R.id.GPSbutton);
         diagnosticButton = findViewById(R.id.DiagnosticButton);
+        mapButton = findViewById(R.id.MapButton);
 
 
 
         gpsButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
+
+
+
+
 
 
 

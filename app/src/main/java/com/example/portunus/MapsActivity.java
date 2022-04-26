@@ -1,5 +1,6 @@
 package com.example.portunus;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
@@ -13,6 +14,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.portunus.databinding.ActivityMapsBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -47,33 +53,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng islavista = new LatLng(34.409721, -119.856949);
+        mMap.addMarker(new MarkerOptions().position(islavista).title("Isla Vista"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(islavista));
 
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-//            ArrayList<Integer> lats = extras.getIntegerArrayList("latitudes");
-//            ArrayList<Integer> longs = extras.getIntegerArrayList("longitudes");
 
-            double[] lats = extras.getDoubleArray("latitudes");
-            double[] longs = extras.getDoubleArray("longitudes");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference locationRef = database.getReference("Location");
 
-            Log.d("TAG", "lats array length: " + lats.length);
+//        ArrayList<Double> latitudes = new ArrayList<>();
+//        ArrayList<Double> longitudes = new ArrayList<>();
 
-//            LatLng p1 = new LatLng(lats.get(0), longs.get(0));
-//            mMap.addMarker(new MarkerOptions().position(p1).title("L1"));
+        locationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot lat_read = dataSnapshot.child("Live-Location").child("Latitude");
+                DataSnapshot long_read = dataSnapshot.child("Live-Location").child("Longitude");
+                Double lat_value = lat_read.getValue(Double.class);
+                Double long_value = long_read.getValue(Double.class);
 
-            if(lats.length>0 && longs.length>0) {
-                for (int i = 0; i < lats.length; i++) {
-                   // Log.d("TAG", "size of lats: " + lats.size());
-                    //LatLng point = new LatLng(lats.get(i), longs.get(i));
-                    LatLng point = new LatLng(lats[i], longs[i]);
-                    mMap.addMarker(new MarkerOptions().position(point).title("location history"));
-                }
+                LatLng newPoint = new LatLng(lat_value, long_value);
+                mMap.addMarker(new MarkerOptions().position(newPoint).title("New Point"));
+
+
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        Bundle extras = getIntent().getExtras();
+//        if(extras != null){
+////            ArrayList<Integer> lats = extras.getIntegerArrayList("latitudes");
+////            ArrayList<Integer> longs = extras.getIntegerArrayList("longitudes");
+//
+//            double[] lats = extras.getDoubleArray("latitudes");
+//            double[] longs = extras.getDoubleArray("longitudes");
+//
+//            //Log.d("TAG", "lats array length: " + lats.length);
+//
+////            LatLng p1 = new LatLng(lats.get(0), longs.get(0));
+////            mMap.addMarker(new MarkerOptions().position(p1).title("L1"));
+//
+//            if(lats.length>0 && longs.length>0) {
+//                for (int i = 0; i < lats.length; i++) {
+//                   // Log.d("TAG", "size of lats: " + lats.size());
+//                    //LatLng point = new LatLng(lats.get(i), longs.get(i));
+//                    LatLng point = new LatLng(lats[i], longs[i]);
+//                    mMap.addMarker(new MarkerOptions().position(point).title("location history"));
+//                }
+//            }
+//        }
 
 
     }
