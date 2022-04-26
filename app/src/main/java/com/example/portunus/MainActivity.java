@@ -77,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
                // Log.d(TAG, "Value is: " + value)
                 Pair<Double, Double> coordinates = new Pair<>(lat_value, long_value);
                 firebaseRead.add(coordinates);
+                Log.d("firebaseList", String.valueOf(firebaseRead.size()));
                 arrayAdapter.notifyDataSetChanged();
+
 
 
 //                for(int i = 0; i<firebaseRead.size(); i++){

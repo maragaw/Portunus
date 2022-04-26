@@ -1,11 +1,14 @@
 package com.example.portunus;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.portunus.databinding.ActivityMapsBinding;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +32,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
+    private ArrayList<Double> latitudes, longitudes;
+    private ArrayList<LatLng> pointList;
+    Button refreshButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +47,79 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference locationRef = database.getReference("Location");
+
+        latitudes = new ArrayList<>();
+        longitudes = new ArrayList<>();
+        pointList = new ArrayList<>();
+
+
+        locationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot lat_read = dataSnapshot.child("Live-Location").child("Latitude");
+                DataSnapshot long_read = dataSnapshot.child("Live-Location").child("Longitude");
+                Double lat_value = lat_read.getValue(Double.class);
+                Double long_value = long_read.getValue(Double.class);
+                Log.d("newlatval", String.valueOf(lat_value));
+                Log.d("newlongval", String.valueOf(long_value));
+
+//                latitudes.add(lat_value);
+//                longitudes.add(long_value);
+                latitudes.add(lat_read.getValue(Double.class));
+                longitudes.add(long_read.getValue(Double.class));
+
+                LatLng newPoint = new LatLng(lat_value, long_value);
+                pointList.add(newPoint);
+
+                Log.d("pointMap", String.valueOf(pointList));
+                Log.d("pointList", String.valueOf(pointList.size()));
+                Log.d("latList", String.valueOf(latitudes.size()));
+                Log.d("longList", String.valueOf(longitudes.size()));
+
+                //mMap.addMarker(new MarkerOptions().position(newPoint).title("New Point"));
+                //mMap.animateCamera(CameraUpdateFactory.zoomTo(21.0f));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(newPoint));
+                Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).addAll(pointList));
+                //path.setColor(225); //Blue ARGB code for Polyline
+
+
+                //Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).add());
+
+                //path.setColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+//                for(int i = 0; i<pointList.size();i++){
+//                    mMap.addMarker(new MarkerOptions().position(pointList.get(i)).title("Point List"));
+//                    Log.d("addedpoint", String.valueOf(pointList.get(i)));
+//                }
+
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+//        refreshButton = findViewById(R.id.refreshButton);
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).addAll(pointList));
+////                for(int i = 0; i<pointList.size();i++){
+////                    mMap.addMarker(new MarkerOptions().position(pointList.get(i)).title("Point List"));
+////                    Log.d("addedpoint", String.valueOf(pointList.get(i)));
+////                }
+//            }
+//        });
+
     }
+
+
 
     /**
      * Manipulates the map once available.
@@ -54,35 +135,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         LatLng islavista = new LatLng(34.409721, -119.856949);
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(islavista, 15f));
         mMap.addMarker(new MarkerOptions().position(islavista).title("Isla Vista"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(islavista));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(islavista));
 
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference locationRef = database.getReference("Location");
-
-//        ArrayList<Double> latitudes = new ArrayList<>();
-//        ArrayList<Double> longitudes = new ArrayList<>();
-
-        locationRef.addValueEventListener(new ValueEventListener() {
+        refreshButton = findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataSnapshot lat_read = dataSnapshot.child("Live-Location").child("Latitude");
-                DataSnapshot long_read = dataSnapshot.child("Live-Location").child("Longitude");
-                Double lat_value = lat_read.getValue(Double.class);
-                Double long_value = long_read.getValue(Double.class);
-
-                LatLng newPoint = new LatLng(lat_value, long_value);
-                mMap.addMarker(new MarkerOptions().position(newPoint).title("New Point"));
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View view) {
+                Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).addAll(pointList));
+                for(int i = 0; i<pointList.size();i++){
+                    mMap.addMarker(new MarkerOptions().position(pointList.get(i)).title("Point List"));
+                    Log.d("addedpoint", String.valueOf(pointList.get(i)));
+                }
             }
         });
+
+
+//        for(int i = 0; i<pointList.size();i++){
+//            mMap.addMarker(new MarkerOptions().position(pointList.get(i)).title("Point List"));
+//            Log.d("addedpoint", String.valueOf(pointList.get(i)));
+//        }
+
+
+        //Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).addAll(pointList));
+
+//        for(int i = 0; i<pointList.size();i++){
+//            mMap.addMarker(new MarkerOptions().position(pointList.get(i)).title("Point List"));
+//        }
 
 //        Bundle extras = getIntent().getExtras();
 //        if(extras != null){
