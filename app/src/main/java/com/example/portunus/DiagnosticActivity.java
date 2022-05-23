@@ -1,10 +1,17 @@
 package com.example.portunus;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -36,15 +43,44 @@ public class DiagnosticActivity extends AppCompatActivity {
         lightListView.setAdapter(lightAdapter);
 
 
-        //dummy values
-        rpmList.add(4000);
-        rpmAdapter.notifyDataSetChanged();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference carRef = database.getReference("Car");
 
-        prndlList.add("P");
-        prndlAdapter.notifyDataSetChanged();
+        carRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot light = dataSnapshot.child("light");
+                DataSnapshot prndl = dataSnapshot.child("prndl");
+                DataSnapshot rpm = dataSnapshot.child("rpm");
 
-        lightList.add("On");
-        lightAdapter.notifyDataSetChanged();
+                String lightvalue = light.getValue(String.class);
+                String prndlvalue = prndl.getValue(String.class);
+                Integer rpmvalue = rpm.getValue(Integer.class);
+
+                rpmList.add(rpmvalue);
+                prndlList.add(prndlvalue);
+                lightList.add(lightvalue);
+
+                rpmAdapter.notifyDataSetChanged();
+                prndlAdapter.notifyDataSetChanged();
+                lightAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        //dummy values
+//        rpmList.add(4000);
+//        rpmAdapter.notifyDataSetChanged();
+//
+//        prndlList.add("P");
+//        prndlAdapter.notifyDataSetChanged();
+//
+//        lightList.add("On");
+//        lightAdapter.notifyDataSetChanged();
 
 
     }
