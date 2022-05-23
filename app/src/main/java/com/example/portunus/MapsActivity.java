@@ -138,7 +138,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(islavista, 15f));
         mMap.addMarker(new MarkerOptions().position(islavista).title("Isla Vista"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(islavista));
-
+//        Polyline dummy  = mMap.addPolyline(new PolylineOptions().clickable(true).add(
+//                new LatLng(34.409721, -119.856949),
+//                new LatLng(34.41914115994636, -119.86784274965484),
+//                new LatLng(34.430044242571, -119.86775691897405),
+//                new LatLng(34.43436260288937, -119.84423931244189),
+//                new LatLng(34.437972864025966, -119.83007725011412),
+//                new LatLng(34.43761892375195, -119.80441387656256),
+//                new LatLng(34.43924703678484, -119.7906809638184),
+//                new LatLng(34.4408043324319, -119.74553402573105)));
         refreshButton = findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
