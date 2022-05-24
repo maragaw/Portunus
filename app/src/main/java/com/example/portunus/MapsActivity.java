@@ -138,6 +138,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(islavista, 15f));
         mMap.addMarker(new MarkerOptions().position(islavista).title("Isla Vista"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(islavista));
+
+        Polyline path = mMap.addPolyline(new PolylineOptions().clickable(true).add(
+           new LatLng(34.4162023, -119.8481601),
+           new LatLng(34.4171649, -119.8481456), new LatLng(34.4180453, -119.8482244),
+                new LatLng(34.4187233, -119.8481735), new LatLng(34.4190832, -119.8476711),
+                new LatLng(34.4187550, -119.8470312), new LatLng(34.4184955, -119.8463328),
+                new LatLng(34.4181236, -119.8460418), new LatLng(34.4179274, -119.8457387),
+                new LatLng(34.4176843, -119.8451970), new LatLng(34.4174194, -119.8445645),
+                new LatLng(34.4173289, -119.8441240), new LatLng(34.4172136, -119.8435577),
+                new LatLng(34.4167639, -119.8432440), new LatLng(34.4167639, -119.8432440),
+                new LatLng(34.4164151, -119.8425680), new LatLng(34.4161200, -119.8421623),
+                new LatLng(34.4159485, -119.8413908), new LatLng(34.4163266, -119.8409513)
+        ));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4162023, -119.8481601)).title("Isla Vista"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4163266, -119.8409513)).title("Isla Vista"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4173289, -119.8441240)).title("Isla Vista"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4167639, -119.8432440)).title("Isla Vista"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4174194, -119.8445645)).title("Isla Vista"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.4187233, -119.8481735)).title("Isla Vista"));
+
+
 //        Polyline dummy  = mMap.addPolyline(new PolylineOptions().clickable(true).add(
 //                new LatLng(34.409721, -119.856949),
 //                new LatLng(34.41914115994636, -119.86784274965484),

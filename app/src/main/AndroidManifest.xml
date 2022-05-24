@@ -17,14 +17,15 @@
         android:theme="@style/Theme.Portunus">
         <activity
             android:name=".DiagnosticActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Diagnostics"/>
         <activity
             android:name=".MenuActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:label="@string/title_activity_menu" />
+            android:label="GPS Coordinates" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

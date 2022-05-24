@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#676363"
     tools:context=".MainActivity">
 
     <ListView
@@ -15,14 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect to Portunus Device"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:layout_width="match_parent"
@@ -34,12 +27,11 @@
         android:layout_height="fill_parent">
 
 
-
         <RelativeLayout
             android:id="@+id/InnerRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" >
+            android:layout_alignParentBottom="true">
 
             <Button
                 android:id="@+id/UploadButton"
@@ -52,9 +44,8 @@
             <EditText
                 android:id="@+id/EditText"
                 android:layout_width="fill_parent"
-                android:layout_toLeftOf="@id/UploadButton"
-                android:layout_height="wrap_content">
-            </EditText>
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/UploadButton"></EditText>
 
         </RelativeLayout>
 
